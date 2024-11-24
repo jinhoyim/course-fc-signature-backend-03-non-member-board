@@ -4,10 +4,10 @@ import course.fastcampus.signature_backend_path.simpleboard.post.db.PostEntity;
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostRepository;
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostStatus;
 import course.fastcampus.signature_backend_path.simpleboard.post.exception.PostPasswordMismatchException;
+import course.fastcampus.signature_backend_path.simpleboard.post.model.PostListItem;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostRequest;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostResponse;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostAccessRequest;
-import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -54,9 +54,9 @@ public class PostService {
         }).orElseThrow();
     }
 
-    public List<PostResponse> all() {
-        return postRepository.findAllByStatus(PostStatus.REGISTERED).stream()
-                .map(PostResponse::of)
+    public List<PostListItem> all() {
+        return postRepository.findAllByStatusOrderByPostedAtDesc(PostStatus.REGISTERED).stream()
+                .map(PostListItem::of)
                 .toList();
     }
 

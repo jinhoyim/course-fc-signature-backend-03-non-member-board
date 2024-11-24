@@ -30,6 +30,19 @@ Content-Type: application/json
   "password": "pass1"
 }
 
+### 게시물 등록
+POST http://localhost:8080/api/post
+Content-Type: application/json
+
+{
+  "board_id": 1,
+  "username": "tester2",
+  "password": "pass1",
+  "email": "b@b.com",
+  "title": "post 3",
+  "content": "ccccc"
+}
+
 ### 게시물 목록 조회
 GET http://localhost:8080/api/post/all
 

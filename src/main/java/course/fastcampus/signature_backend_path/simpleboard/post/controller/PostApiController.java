@@ -1,6 +1,7 @@
 package course.fastcampus.signature_backend_path.simpleboard.post.controller;
 
 import course.fastcampus.signature_backend_path.simpleboard.post.exception.PostPasswordMismatchException;
+import course.fastcampus.signature_backend_path.simpleboard.post.model.PostListItem;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostRequest;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostResponse;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostAccessRequest;
@@ -43,7 +44,7 @@ public class PostApiController {
     }
 
     @GetMapping("all")
-    public List<PostResponse> list() {
+    public List<PostListItem> list() {
         return postService.all();
     }
 
