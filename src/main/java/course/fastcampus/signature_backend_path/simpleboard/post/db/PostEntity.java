@@ -69,4 +69,8 @@ public class PostEntity {
                 postedAt
         );
     }
+
+    public void remove() {
+        status = PostStatus.REMOVED;
+    }
 }

@@ -32,3 +32,11 @@ Content-Type: application/json
 
 ### 게시물 목록 조회
 GET http://localhost:8080/api/post/all
+
+### 게시물 삭제
+POST http://localhost:8080/api/post/1/delete
+Content-Type: {{json}}
+
+{
+  "password": "pass1"
+}

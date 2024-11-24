@@ -5,5 +5,5 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.validation.constraints.NotBlank;
 
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
-public record PostViewRequest(@NotBlank String password) {
+public record PostAccessRequest(@NotBlank String password) {
 }
