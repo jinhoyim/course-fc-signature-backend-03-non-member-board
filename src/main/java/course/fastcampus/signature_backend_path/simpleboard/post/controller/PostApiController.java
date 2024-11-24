@@ -9,6 +9,8 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/post")
 public class PostApiController {
@@ -34,5 +36,10 @@ public class PostApiController {
         catch (PostPasswordMismatchException pe) {
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    @GetMapping("all")
+    public List<PostResponse> list() {
+        return postService.all();
     }
 }

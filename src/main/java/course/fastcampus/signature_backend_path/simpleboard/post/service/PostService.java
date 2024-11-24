@@ -11,6 +11,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class PostService {
@@ -50,5 +51,11 @@ public class PostService {
 
             return PostResponse.of(post);
         }).orElseThrow();
+    }
+
+    public List<PostResponse> all() {
+        return postRepository.findAll().stream()
+                .map(PostResponse::of)
+                .toList();
     }
 }
