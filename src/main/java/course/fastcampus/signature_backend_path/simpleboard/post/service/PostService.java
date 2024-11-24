@@ -2,8 +2,11 @@ package course.fastcampus.signature_backend_path.simpleboard.post.service;
 
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostEntity;
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostRepository;
+import course.fastcampus.signature_backend_path.simpleboard.post.exception.PostPasswordMismatchException;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostRequest;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostResponse;
+import course.fastcampus.signature_backend_path.simpleboard.post.model.PostViewRequest;
+import jakarta.validation.Valid;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +38,17 @@ public class PostService {
 
         PostEntity saved = postRepository.save(post);
         return PostResponse.of(saved);
+    }
+
+    public PostResponse view(Long id, @Valid PostViewRequest request) {
+        return postRepository.findById(id).map(post -> {
+            String requestPassword = request.password();
+            String postPassword = post.getPassword();
+            if (!passwordEncoder.matches(requestPassword, postPassword)){
+                throw new PostPasswordMismatchException();
+            }
+
+            return PostResponse.of(post);
+        }).orElseThrow();
     }
 }

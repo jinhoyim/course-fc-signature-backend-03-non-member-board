@@ -1,0 +1,31 @@
+@baseUrl = http://localhost:8080/api
+@json = application/json
+
+### 게시판 생성
+POST {{baseUrl}}/board
+Content-Type: {{json}}
+
+{
+  "board_name": "board1"
+}
+
+### 게시물 등록
+POST http://localhost:8080/api/post
+Content-Type: application/json
+
+{
+  "board_id": 1,
+  "username": "tester",
+  "password": "pass1",
+  "email": "a@a.com",
+  "title": "post 2",
+  "content": "abcde"
+}
+
+### 게시물 조회
+POST http://localhost:8080/api/post/1
+Content-Type: application/json
+
+{
+  "password": "pass1"
+}
