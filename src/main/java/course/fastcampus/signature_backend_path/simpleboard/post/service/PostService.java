@@ -1,13 +1,11 @@
 package course.fastcampus.signature_backend_path.simpleboard.post.service;
 
+import course.fastcampus.signature_backend_path.simpleboard.board.db.BoardRepository;
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostEntity;
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostRepository;
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostStatus;
 import course.fastcampus.signature_backend_path.simpleboard.post.exception.PostPasswordMismatchException;
-import course.fastcampus.signature_backend_path.simpleboard.post.model.PostListItem;
-import course.fastcampus.signature_backend_path.simpleboard.post.model.PostRequest;
-import course.fastcampus.signature_backend_path.simpleboard.post.model.PostResponse;
-import course.fastcampus.signature_backend_path.simpleboard.post.model.PostAccessRequest;
+import course.fastcampus.signature_backend_path.simpleboard.post.model.*;
 import course.fastcampus.signature_backend_path.simpleboard.reply.db.ReplyEntity;
 import course.fastcampus.signature_backend_path.simpleboard.reply.db.ReplyRepository;
 import course.fastcampus.signature_backend_path.simpleboard.reply.db.ReplyStatus;
@@ -23,29 +21,33 @@ public class PostService {
     private final PostRepository postRepository;
     private final ReplyRepository replyRepository;
     private final PasswordEncoder passwordEncoder;
+    private final BoardRepository boardRepository;
 
     public PostService(
             PostRepository postRepository,
             ReplyRepository replyRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder, BoardRepository boardRepository) {
         this.postRepository = postRepository;
         this.replyRepository = replyRepository;
         this.passwordEncoder = passwordEncoder;
+        this.boardRepository = boardRepository;
     }
 
     public PostResponse create(PostRequest postRequest) {
-        PostEntity post = PostEntity.create(
-                postRequest.boardId(),
-                postRequest.username(),
-                passwordEncoder.encode(postRequest.password()),
-                postRequest.email(),
-                postRequest.title(),
-                postRequest.content(),
-                LocalDateTime.now()
-        );
+        return boardRepository.findById(postRequest.boardId()).map(board -> {
+            PostEntity post = PostEntity.create(
+                    board,
+                    postRequest.username(),
+                    passwordEncoder.encode(postRequest.password()),
+                    postRequest.email(),
+                    postRequest.title(),
+                    postRequest.content(),
+                    LocalDateTime.now()
+            );
 
-        PostEntity saved = postRepository.save(post);
-        return PostResponse.of(saved);
+            PostEntity saved = postRepository.save(post);
+            return PostConverter.fromEntity(saved);
+        }).orElseThrow();
     }
 
     public PostResponse view(Long id, PostAccessRequest request) {
@@ -60,7 +62,7 @@ public class PostService {
                     post.getId(),
                     ReplyStatus.REGISTERED);
 
-            return PostResponse.of(post, replies);
+            return PostConverter.fromEntity(post, replies);
         }).orElseThrow();
     }
 

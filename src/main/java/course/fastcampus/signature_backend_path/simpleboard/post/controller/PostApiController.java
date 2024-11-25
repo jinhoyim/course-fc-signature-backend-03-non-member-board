@@ -48,12 +48,12 @@ public class PostApiController {
         return postService.all();
     }
 
-    @PostMapping("{id}/delete")
+    @PostMapping("{postId}/delete")
     public ResponseEntity<Void> delete(
-            @PathVariable Long id,
+            @PathVariable Long postId,
             @Valid @RequestBody PostAccessRequest request) {
         try {
-            postService.delete(id, request);
+            postService.delete(postId, request);
             return ResponseEntity.ok().build();
         }
         catch (PostPasswordMismatchException pe) {

@@ -19,7 +19,7 @@ Content-Type: application/json
   "password": "pass1",
   "email": "a@a.com",
   "title": "post 1",
-  "content": "abcde"
+  "content": "11111"
 }
 
 ### 게시물 조회
@@ -40,7 +40,7 @@ Content-Type: application/json
   "password": "pass1",
   "email": "b@b.com",
   "title": "post 2",
-  "content": "ccccc"
+  "content": "22222"
 }
 
 ### 게시물 목록 조회
@@ -64,7 +64,7 @@ Content-Type: application/json
   "password": "pass1",
   "email": "c@c.com",
   "title": "post 3",
-  "content": "dddd"
+  "content": "33333"
 }
 
 ### 답변 등록
@@ -76,7 +76,7 @@ Content-Type: application/json
   "username": "admin1",
   "password": "pass1",
   "title": "answer 1",
-  "content": "dddd dddd"
+  "content": "333 333"
 }
 
 ### 답변 등록
@@ -88,7 +88,7 @@ Content-Type: application/json
   "username": "admin1",
   "password": "pass1",
   "title": "answer 2",
-  "content": "dddd dddd dddd"
+  "content": "333 333 333"
 }
 
 ### 게시물 조회

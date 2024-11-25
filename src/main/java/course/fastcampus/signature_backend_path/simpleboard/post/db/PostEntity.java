@@ -1,19 +1,24 @@
 package course.fastcampus.signature_backend_path.simpleboard.post.db;
 
+import course.fastcampus.signature_backend_path.simpleboard.board.db.BoardEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
 @Entity(name = "post")
 @Getter
+@ToString
 public class PostEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long boardId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @ToString.Exclude
+    private BoardEntity board;
 
     private String username;
 
@@ -34,14 +39,14 @@ public class PostEntity {
     protected PostEntity() {}
 
     private PostEntity(
-            Long boardId,
+            BoardEntity board,
             String username,
             String password,
             String email,
             String title,
             String content,
             LocalDateTime postedAt) {
-        this.boardId = boardId;
+        this.board = board;
         this.username = username;
         this.password = password;
         this.email = email;
@@ -52,7 +57,7 @@ public class PostEntity {
     }
 
     public static PostEntity create(
-            Long boardId,
+            BoardEntity board,
             String username,
             String password,
             String email,
@@ -60,7 +65,7 @@ public class PostEntity {
             String content,
             LocalDateTime postedAt) {
         return new PostEntity(
-                boardId,
+                board,
                 username,
                 password,
                 email,
