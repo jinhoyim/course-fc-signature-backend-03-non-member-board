@@ -8,6 +8,9 @@ import course.fastcampus.signature_backend_path.simpleboard.post.model.PostListI
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostRequest;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostResponse;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostAccessRequest;
+import course.fastcampus.signature_backend_path.simpleboard.reply.db.ReplyEntity;
+import course.fastcampus.signature_backend_path.simpleboard.reply.db.ReplyRepository;
+import course.fastcampus.signature_backend_path.simpleboard.reply.db.ReplyStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -18,12 +21,15 @@ import java.util.List;
 public class PostService {
 
     private final PostRepository postRepository;
+    private final ReplyRepository replyRepository;
     private final PasswordEncoder passwordEncoder;
 
     public PostService(
             PostRepository postRepository,
+            ReplyRepository replyRepository,
             PasswordEncoder passwordEncoder) {
         this.postRepository = postRepository;
+        this.replyRepository = replyRepository;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -50,7 +56,11 @@ public class PostService {
                 throw new PostPasswordMismatchException();
             }
 
-            return PostResponse.of(post);
+            List<ReplyEntity> replies = replyRepository.findAllByPostIdAndStatusOrderByRepliedAtAsc(
+                    post.getId(),
+                    ReplyStatus.REGISTERED);
+
+            return PostResponse.of(post, replies);
         }).orElseThrow();
     }
 

@@ -18,7 +18,7 @@ Content-Type: application/json
   "username": "tester",
   "password": "pass1",
   "email": "a@a.com",
-  "title": "post 2",
+  "title": "post 1",
   "content": "abcde"
 }
 
@@ -39,7 +39,7 @@ Content-Type: application/json
   "username": "tester2",
   "password": "pass1",
   "email": "b@b.com",
-  "title": "post 3",
+  "title": "post 2",
   "content": "ccccc"
 }
 
@@ -49,6 +49,51 @@ GET http://localhost:8080/api/post/all
 ### 게시물 삭제
 POST http://localhost:8080/api/post/1/delete
 Content-Type: {{json}}
+
+{
+  "password": "pass1"
+}
+
+### 게시물 등록
+POST http://localhost:8080/api/post
+Content-Type: application/json
+
+{
+  "board_id": 1,
+  "username": "tester3",
+  "password": "pass1",
+  "email": "c@c.com",
+  "title": "post 3",
+  "content": "dddd"
+}
+
+### 답변 등록
+POST http://localhost:8080/api/reply
+Content-Type: application/json
+
+{
+  "post_id": 3,
+  "username": "admin1",
+  "password": "pass1",
+  "title": "answer 1",
+  "content": "dddd dddd"
+}
+
+### 답변 등록
+POST http://localhost:8080/api/reply
+Content-Type: application/json
+
+{
+  "post_id": 3,
+  "username": "admin1",
+  "password": "pass1",
+  "title": "answer 2",
+  "content": "dddd dddd dddd"
+}
+
+### 게시물 조회
+POST http://localhost:8080/api/post/3
+Content-Type: application/json
 
 {
   "password": "pass1"
