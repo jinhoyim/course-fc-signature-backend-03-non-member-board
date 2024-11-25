@@ -1,5 +1,6 @@
 package course.fastcampus.signature_backend_path.simpleboard.post.service;
 
+import course.fastcampus.signature_backend_path.simpleboard.board.db.BoardEntity;
 import course.fastcampus.signature_backend_path.simpleboard.board.db.BoardRepository;
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostEntity;
 import course.fastcampus.signature_backend_path.simpleboard.post.db.PostRepository;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @Service
 public class PostService {
@@ -34,9 +36,11 @@ public class PostService {
     }
 
     public PostResponse create(PostRequest postRequest) {
-        return boardRepository.findById(postRequest.boardId()).map(board -> {
+        // FK가 없으므로 BoardEntity를 조회하지 않으려면 존재하는지 먼저 확인이 필요하다.
+        if (boardRepository.existsById(postRequest.boardId())) {
             PostEntity post = PostEntity.create(
-                    board,
+                    // Id만 포함된 게시판 생성
+                    new BoardEntity(postRequest.boardId()),
                     postRequest.username(),
                     passwordEncoder.encode(postRequest.password()),
                     postRequest.email(),
@@ -47,7 +51,9 @@ public class PostService {
 
             PostEntity saved = postRepository.save(post);
             return PostConverter.fromEntity(saved);
-        }).orElseThrow();
+        } else {
+            throw new NoSuchElementException("Board does not exist");
+        }
     }
 
     public PostResponse view(Long id, PostAccessRequest request) {
