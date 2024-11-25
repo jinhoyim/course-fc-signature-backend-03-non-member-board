@@ -1,10 +1,12 @@
 package course.fastcampus.signature_backend_path.simpleboard.reply.db;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import course.fastcampus.signature_backend_path.simpleboard.post.db.PostEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.time.LocalDateTime;
 
@@ -12,13 +14,17 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
+@ToString
 public class ReplyEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long postId;
+    @ManyToOne
+    @JsonIgnore
+    @ToString.Exclude
+    private PostEntity post;
 
     private String username;
 

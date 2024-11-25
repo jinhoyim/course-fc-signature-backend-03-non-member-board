@@ -2,6 +2,7 @@ package course.fastcampus.signature_backend_path.simpleboard.reply.model;
 
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
+import course.fastcampus.signature_backend_path.simpleboard.post.db.PostEntity;
 import course.fastcampus.signature_backend_path.simpleboard.reply.db.ReplyEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -17,9 +18,9 @@ public record ReplyRequest(
         @NotBlank String title,
         @NotBlank String content
 ) {
-    public ReplyEntity toEntity() {
+    public ReplyEntity toEntity(PostEntity post) {
         return ReplyEntity.builder()
-                .postId(postId())
+                .post(post)
                 .username(username())
                 .password(password())
                 .title(title())
