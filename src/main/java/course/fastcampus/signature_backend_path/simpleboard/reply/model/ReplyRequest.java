@@ -6,7 +6,6 @@ import course.fastcampus.signature_backend_path.simpleboard.post.db.PostEntity;
 import course.fastcampus.signature_backend_path.simpleboard.reply.db.ReplyEntity;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 
 import java.time.LocalDateTime;
 
@@ -14,7 +13,6 @@ import java.time.LocalDateTime;
 public record ReplyRequest(
         @NotNull Long postId,
         @NotBlank String username,
-        @NotBlank @Size(min = 4, max = 20) String password,
         @NotBlank String title,
         @NotBlank String content
 ) {
@@ -22,7 +20,6 @@ public record ReplyRequest(
         return ReplyEntity.builder()
                 .post(post)
                 .username(username())
-                .password(password())
                 .title(title())
                 .content(content())
                 .repliedAt(LocalDateTime.now())

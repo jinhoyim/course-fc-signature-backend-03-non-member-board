@@ -28,9 +28,6 @@ public class ReplyEntity {
 
     private String username;
 
-    @JsonIgnore
-    private String password;
-
     @Builder.Default
     @Enumerated(EnumType.STRING)
     private ReplyStatus status = ReplyStatus.REGISTERED;

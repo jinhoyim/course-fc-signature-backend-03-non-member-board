@@ -74,7 +74,6 @@ Content-Type: application/json
 {
   "post_id": 3,
   "username": "admin1",
-  "password": "pass1",
   "title": "answer 1",
   "content": "333 333"
 }
@@ -86,7 +85,6 @@ Content-Type: application/json
 {
   "post_id": 3,
   "username": "admin1",
-  "password": "pass1",
   "title": "answer 2",
   "content": "333 333 333"
 }
@@ -106,7 +104,6 @@ Content-Type: application/json
 {
   "post_id": 100,
   "username": "admin1",
-  "password": "pass1",
   "title": "answer 2",
   "content": "333 333 333"
 }
@@ -118,7 +115,6 @@ Content-Type: application/json
 {
   "post_id": 3,
   "username": "admin1",
-  "password": "pass1",
   "title": "answer 3",
   "content": "aaa aaa"
 }

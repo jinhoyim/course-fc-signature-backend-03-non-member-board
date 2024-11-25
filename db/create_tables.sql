@@ -22,7 +22,6 @@ create table reply(
     id bigint not null auto_increment,
     post_id bigint not null,
     username varchar(50) not null,
-    password varchar(128) not null,
     status varchar(50) not null,
     title varchar(100) not null,
     content text not null,

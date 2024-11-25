@@ -28,7 +28,7 @@ public class ReplyService {
             return replyRepository.save(entity);
         }
         catch (DataIntegrityViolationException ex) {
-            String message = "답변을 저장할 수 없습니다. PostId: '%s'".formatted(request.postId());
+            String message = "답변을 저장할 수 없습니다. request: '%s'".formatted(request);
             throw new IllegalArgumentException(message, ex);
         }
     }
