@@ -98,3 +98,27 @@ Content-Type: application/json
 {
   "password": "pass1"
 }
+
+### 답변 등록 실패
+POST http://localhost:8080/api/reply
+Content-Type: application/json
+
+{
+  "post_id": 100,
+  "username": "admin1",
+  "password": "pass1",
+  "title": "answer 2",
+  "content": "333 333 333"
+}
+
+### 답변 등록
+POST http://localhost:8080/api/reply
+Content-Type: application/json
+
+{
+  "post_id": 3,
+  "username": "admin1",
+  "password": "pass1",
+  "title": "answer 3",
+  "content": "aaa aaa"
+}

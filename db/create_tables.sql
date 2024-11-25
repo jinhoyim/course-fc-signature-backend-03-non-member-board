@@ -30,4 +30,5 @@ create table reply(
     primary key (id)
 ) engine innodb character set utf8mb4;
 
-# FK 생략
+# Board-Post FK는 생략
+alter table reply add foreign key(post_id) references post(id);
