@@ -1,10 +1,13 @@
 package course.fastcampus.signature_backend_path.simpleboard.board.db;
 
+import com.fasterxml.jackson.databind.PropertyNamingStrategies;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import jakarta.persistence.*;
 import lombok.Getter;
 
 @Entity(name = "board")
 @Getter
+@JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class BoardEntity {
 
     @Id
