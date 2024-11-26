@@ -40,17 +40,9 @@ public class CreatePostCommandExecutor_specs {
         String username = "testuser";
         String password = "pass!";
         String email = "a@a.a";
+        Long boardId = getBoardId(boardName);
 
-        BoardEntity boardEntity = BoardEntity.create(boardName);
-        Long boardId = boardRepository.save(boardEntity).getId();
-        CreatePostCommand command = new CreatePostCommand(
-                boardId,
-                username,
-                password,
-                email,
-                title,
-                content
-        );
+        var command = new CreatePostCommand(boardId, username, password, email, title, content);
 
         // Act
         Long postId = createPostCommandExecutor.execute(command).id();
@@ -75,17 +67,9 @@ public class CreatePostCommandExecutor_specs {
         String username = "testuser";
         String password = "pass!";
         String email = "a@a.a";
+        Long boardId = getBoardId(boardName);
 
-        BoardEntity boardEntity = BoardEntity.create(boardName);
-        Long boardId = boardRepository.save(boardEntity).getId();
-        CreatePostCommand command = new CreatePostCommand(
-                boardId,
-                username,
-                password,
-                email,
-                title,
-                content
-        );
+        var command = new CreatePostCommand(boardId, username, password, email, title, content);
 
         // Act
         Long postId = createPostCommandExecutor.execute(command).id();
@@ -94,5 +78,11 @@ public class CreatePostCommandExecutor_specs {
         PostEntity post = postRepository.findById(postId).get();
         boolean actual = passwordEncoder.matches(password, post.getPassword());
         assertThat(actual).isTrue();
+    }
+
+    private Long getBoardId(String boardName) {
+        BoardEntity boardEntity = BoardEntity.create(boardName);
+        Long boardId = boardRepository.save(boardEntity).getId();
+        return boardId;
     }
 }

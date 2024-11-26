@@ -1,8 +1,7 @@
-package course.fastcampus.signature_backend_path.simpleboard.test.api.post.create_post;
+package course.fastcampus.signature_backend_path.simpleboard.test.api.post;
 
 import autoparams.AutoSource;
 import autoparams.ValueAutoSource;
-import course.fastcampus.signature_backend_path.simpleboard.board.db.BoardEntity;
 import course.fastcampus.signature_backend_path.simpleboard.board.model.BoardRequest;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.CreatePostCommand;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -12,6 +11,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import static course.fastcampus.signature_backend_path.simpleboard.TestSpecifiedLanguage.createBoard;
 import static org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -24,31 +24,16 @@ class Post_specs {
     @ParameterizedTest
     @AutoSource
     void sut_correctly_creates_post(BoardRequest boardRequest) {
-        ResponseSpec boardSpec = webClient.post()
-                .uri("/api/board")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(boardRequest)
-                .exchange();
+        Long boardId = createBoard(webClient, boardRequest).getId();
+        var postRequest = new CreatePostCommand(boardId, "tester1", "pass", "a@a.a", "title", "content");
 
-        BoardEntity board = boardSpec.expectBody(BoardEntity.class)
-                .returnResult().getResponseBody();
-        Long boardId = board.getId();
-
-        CreatePostCommand postRequest = new CreatePostCommand(
-                boardId,
-                "tester1",
-                "pass",
-                "a@a.a",
-                "title",
-                "content"
-        );
-
-        webClient.post()
+        ResponseSpec spec = webClient.post()
                 .uri("/api/post")
                 .contentType(MediaType.APPLICATION_JSON)
                 .bodyValue(postRequest)
-                .exchange()
-                .expectStatus().isOk();
+                .exchange();
+
+        spec.expectStatus().isOk();
     }
 
     @ParameterizedTest
@@ -62,25 +47,8 @@ class Post_specs {
     ) {
         // Arrange
         String email = "a@a.a";
-
-        ResponseSpec boardSpec = webClient.post()
-                .uri("/api/board")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(boardRequest)
-                .exchange();
-
-        BoardEntity board = boardSpec.expectBody(BoardEntity.class)
-                .returnResult().getResponseBody();
-        Long boardId = board.getId();
-
-        CreatePostCommand postRequest = new CreatePostCommand(
-                boardId,
-                username,
-                invalidPassword,
-                email,
-                title,
-                content
-        );
+        Long boardId = createBoard(webClient, boardRequest).getId();
+        var postRequest = new CreatePostCommand(boardId, username, invalidPassword, email, title, content);
 
         // Act
         ResponseSpec spec = webClient.post()
@@ -104,25 +72,8 @@ class Post_specs {
     ) {
         // Arrange
         String password = "pass!";
-
-        ResponseSpec boardSpec = webClient.post()
-                .uri("/api/board")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(boardRequest)
-                .exchange();
-
-        BoardEntity board = boardSpec.expectBody(BoardEntity.class)
-                .returnResult().getResponseBody();
-        Long boardId = board.getId();
-
-        CreatePostCommand postRequest = new CreatePostCommand(
-                boardId,
-                username,
-                password,
-                invaliEmail,
-                title,
-                content
-        );
+        Long boardId = createBoard(webClient, boardRequest).getId();
+        var postRequest = new CreatePostCommand(boardId, username, password, invaliEmail, title, content);
 
         // Act
         ResponseSpec spec = webClient.post()
