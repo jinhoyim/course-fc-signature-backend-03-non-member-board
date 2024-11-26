@@ -56,4 +56,12 @@ public class TestSpecifiedLanguage {
                 .bodyValue(viewRequest)
                 .exchange();
     }
+
+    public static ResponseSpec requestDeletePost(WebTestClient webClient, Long postId, PostAccessRequest deleteRequest) {
+        return webClient.post()
+                .uri("/api/post/" + postId + "/delete")
+                .contentType(MediaType.APPLICATION_JSON)
+                .bodyValue(deleteRequest)
+                .exchange();
+    }
 }
