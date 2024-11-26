@@ -1,5 +1,6 @@
 package course.fastcampus.signature_backend_path.simpleboard.post.controller;
 
+import course.fastcampus.signature_backend_path.simpleboard.common.Api;
 import course.fastcampus.signature_backend_path.simpleboard.post.exception.PostPasswordMismatchException;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostListItem;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.CreatePostCommand;
@@ -9,6 +10,9 @@ import course.fastcampus.signature_backend_path.simpleboard.post.service.CreateP
 import course.fastcampus.signature_backend_path.simpleboard.post.service.PostAnonymousService;
 import course.fastcampus.signature_backend_path.simpleboard.post.service.PostService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -53,8 +57,11 @@ public class PostApiController {
     }
 
     @GetMapping("all")
-    public List<PostListItem> list() {
-        return postService.all();
+    public Api<List<PostListItem>> list(
+            @PageableDefault(page = 0, size = 10, sort = "id", direction = Sort.Direction.DESC)
+            Pageable pageable
+    ) {
+        return postService.all(pageable);
     }
 
     @PostMapping("{postId}/delete")
