@@ -6,6 +6,7 @@ import course.fastcampus.signature_backend_path.simpleboard.post.model.CreatePos
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostResponse;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostAccessRequest;
 import course.fastcampus.signature_backend_path.simpleboard.post.service.CreatePostCommandExecutor;
+import course.fastcampus.signature_backend_path.simpleboard.post.service.PostAnonymousService;
 import course.fastcampus.signature_backend_path.simpleboard.post.service.PostService;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -19,13 +20,16 @@ import java.util.NoSuchElementException;
 public class PostApiController {
 
     private final PostService postService;
+    private final PostAnonymousService postAnonymousService;
     private final CreatePostCommandExecutor createPostCommandExecutor;
 
     public PostApiController(
             PostService postService,
-            CreatePostCommandExecutor createPostCommandExecutor) {
+            CreatePostCommandExecutor createPostCommandExecutor,
+            PostAnonymousService postAnonymousService) {
         this.postService = postService;
         this.createPostCommandExecutor = createPostCommandExecutor;
+        this.postAnonymousService = postAnonymousService;
     }
 
     @PostMapping
@@ -38,7 +42,7 @@ public class PostApiController {
             @PathVariable Long id,
             @Valid @RequestBody PostAccessRequest request) {
         try {
-            return ResponseEntity.ok(postService.view(id, request));
+            return ResponseEntity.ok(postAnonymousService.view(id, request));
         }
         catch (PostPasswordMismatchException pe) {
             return ResponseEntity.badRequest().build();
@@ -58,7 +62,7 @@ public class PostApiController {
             @PathVariable Long postId,
             @Valid @RequestBody PostAccessRequest request) {
         try {
-            postService.delete(postId, request);
+            postAnonymousService.delete(postId, request);
             return ResponseEntity.ok().build();
         }
         catch (PostPasswordMismatchException pe) {
