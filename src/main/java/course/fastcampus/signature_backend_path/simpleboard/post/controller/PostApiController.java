@@ -33,7 +33,7 @@ public class PostApiController {
         return createPostCommandExecutor.execute(postRequest);
     }
 
-    @PostMapping("{id}")
+    @PostMapping("{id}/view")
     public ResponseEntity<PostResponse> view(
             @PathVariable Long id,
             @Valid @RequestBody PostAccessRequest request) {

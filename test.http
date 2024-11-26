@@ -23,7 +23,7 @@ Content-Type: application/json
 }
 
 ### 게시물 조회
-POST http://localhost:8080/api/post/1
+POST http://localhost:8080/api/post/1/view
 Content-Type: application/json
 
 {
@@ -90,7 +90,7 @@ Content-Type: application/json
 }
 
 ### 게시물 조회
-POST http://localhost:8080/api/post/3
+POST http://localhost:8080/api/post/3/view
 Content-Type: application/json
 
 {

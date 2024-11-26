@@ -8,10 +8,10 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWebTestClient;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
 import static course.fastcampus.signature_backend_path.simpleboard.TestSpecifiedLanguage.createBoard;
+import static course.fastcampus.signature_backend_path.simpleboard.TestSpecifiedLanguage.requestCreatePost;
 import static org.springframework.test.web.reactive.server.WebTestClient.ResponseSpec;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -27,13 +27,8 @@ class Post_specs {
         Long boardId = createBoard(webClient, boardRequest).getId();
         var postRequest = new CreatePostCommand(boardId, "tester1", "pass", "a@a.a", "title", "content");
 
-        ResponseSpec spec = webClient.post()
-                .uri("/api/post")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(postRequest)
-                .exchange();
-
-        spec.expectStatus().isOk();
+        requestCreatePost(webClient, postRequest)
+                .expectStatus().isOk();
     }
 
     @ParameterizedTest
@@ -45,19 +40,12 @@ class Post_specs {
             String content,
             BoardRequest boardRequest
     ) {
-        // Arrange
         String email = "a@a.a";
         Long boardId = createBoard(webClient, boardRequest).getId();
         var postRequest = new CreatePostCommand(boardId, username, invalidPassword, email, title, content);
 
-        // Act
-        ResponseSpec spec = webClient.post()
-                .uri("/api/post")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(postRequest)
-                .exchange();
+        ResponseSpec spec = requestCreatePost(webClient, postRequest);
 
-        // Act
         spec.expectStatus().isBadRequest();
     }
 
@@ -70,19 +58,12 @@ class Post_specs {
             String content,
             BoardRequest boardRequest
     ) {
-        // Arrange
         String password = "pass!";
         Long boardId = createBoard(webClient, boardRequest).getId();
         var postRequest = new CreatePostCommand(boardId, username, password, invaliEmail, title, content);
 
-        // Act
-        ResponseSpec spec = webClient.post()
-                .uri("/api/post")
-                .contentType(MediaType.APPLICATION_JSON)
-                .bodyValue(postRequest)
-                .exchange();
+        ResponseSpec spec = requestCreatePost(webClient, postRequest);
 
-        // Act
         spec.expectStatus().isBadRequest();
     }
 }
