@@ -4,6 +4,8 @@ import autoparams.AutoSource;
 import autoparams.customization.Customization;
 import course.fastcampus.signature_backend_path.simpleboard.CreatePostCommandGenerator;
 import course.fastcampus.signature_backend_path.simpleboard.board.model.BoardRequest;
+import course.fastcampus.signature_backend_path.simpleboard.post.db.PostEntity;
+import course.fastcampus.signature_backend_path.simpleboard.post.db.PostRepository;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.CreatePostCommand;
 import course.fastcampus.signature_backend_path.simpleboard.post.model.PostAccessRequest;
 import org.junit.jupiter.api.Test;
@@ -13,7 +15,10 @@ import org.springframework.boot.test.autoconfigure.web.reactive.AutoConfigureWeb
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.web.reactive.server.WebTestClient;
 
+import java.util.Optional;
+
 import static course.fastcampus.signature_backend_path.simpleboard.TestSpecifiedLanguage.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @AutoConfigureWebTestClient
@@ -21,6 +26,9 @@ public class Post_specs {
 
     @Autowired
     private WebTestClient webClient;
+
+    @Autowired
+    private PostRepository postRepository;
 
     @ParameterizedTest
     @AutoSource
@@ -32,8 +40,11 @@ public class Post_specs {
         Long postId = createPost(webClient, command).id();
         var deleteRequest = new PostAccessRequest(command.password());
 
-        requestDeletePost(webClient, postId, deleteRequest)
-                .expectStatus().isOk();
+        WebTestClient.ResponseSpec responseSpec = requestDeletePost(webClient, postId, deleteRequest);
+        Optional<PostEntity> postEntity = postRepository.findById(postId);
+
+        responseSpec.expectStatus().isOk();
+        assertThat(postEntity.isPresent()).isTrue();
     }
 
     @Test
